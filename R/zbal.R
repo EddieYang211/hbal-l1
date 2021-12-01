@@ -1,11 +1,11 @@
 #' @title Hierarchically Regularized Entropy Balancing
-#' @aliases hbal
-#' @description \code{hbal} performs hierarchically regularized entropy balancing 
+#' @aliases zbal
+#' @description \code{zbal} performs hierarchically regularized entropy balancing 
 #' such that the covariate distributions of the control group match those of the 
-#' treatment group. \code{hbal} automatically expands the covariate space to include
+#' treatment group. \code{zbal} automatically expands the covariate space to include
 #' higher order terms and uses cross-validation to select variable penalties for the 
 #' balancing conditions.
-#' @usage hbal(Treatment, X, Y, base.weight = NULL, coefs = NULL ,
+#' @usage zbal(Treatment, X, Y, base.weight = NULL, coefs = NULL ,
 #'  max.iterations = 200, cv = TRUE, folds = 4, expand.degree = 3,
 #'  ds = FALSE, alpha = NULL, constraint.tolerance = 1e-3, print.level = -1, 
 #'  grouping = NULL, shuffle.treat=TRUE, exclude=NULL, seed=NULL)
@@ -30,11 +30,11 @@
 #' X to include higher order terms, hierarchically residualize these terms, perform double selection to only keep the relevant
 #' variables and use cross-validation to select penalities for different groupings of the covariates. 
 #' @return 
-#' An list object of class \code{hbal} with the following elements:
+#' An list object of class \code{zbal} with the following elements:
 #' \item{coefs}{vector that contains coefficients from the reweighting algorithm.}
 #' \item{mat}{matrix of serially expanded covariates if expand=\code{TRUE}. Otherwise, the original covariate matrix is returned.}
 #' \item{penalty}{vector of ridge penalties used for each covariate} 
-#' \item{weights}{vector that contains the control group weights assigned by hbal.}
+#' \item{weights}{vector that contains the control group weights assigned by zbal.}
 #' \item{W}{vector of treatment status}
 #' \item{Y}{vector of outcome}
 #' @author Yiqing Xu, Eddie Yang
@@ -50,8 +50,8 @@
 #' X <- cbind(X1, X2)
 #' treat <- rbinom(N, 1, prob=0.5) # Treatment indicator
 #' y <- X[,1] + X[,2] + rnorm(N) # Outcome
-#' out <- hbal(Treatment = treat, Y = y, X = X)
-#' summary(hbal::att(out))
+#' out <- zbal(Treatment = treat, Y = y, X = X)
+#' summary(zbal::att(out))
 #' 
 #' # Example 2
 #' ## Simulation from Kang and Shafer (2007).
@@ -67,12 +67,12 @@
 #' # Observed covariates
 #' X.mis <- cbind(exp(X[,1]/2), X[,2]*(1+exp(X[,1]))^(-1)+10, 
 #'     (X[,1]*X[,3]/25+.6)^3, (X[,2]+X[,4]+20)^2)
-#' out <- hbal(Treatment = treat, Y = y, X = X.mis)
+#' out <- zbal(Treatment = treat, Y = y, X = X.mis)
 #' summary(att(out))
 #' @export
 
 
-hbal <- function(
+zbal <- function(
 	Treatment,
 	X,
 	Y,
@@ -331,7 +331,7 @@ hbal <- function(
 		out[["penalty"]] <- c(0, min.c$solution)
 	}
 
-	class(out) <- "hbal"
+	class(out) <- "zbal"
 
 	return(out)
 }

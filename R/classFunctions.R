@@ -1,9 +1,9 @@
-#' @title Plotting Covariate Balance from an \code{hbal} Object
+#' @title Plotting Covariate Balance from an \code{zbal} Object
 #' @aliases plot
 #' @description This function plots the covariate difference between the control and treatment groups in standardized means before and after weighting.
-#' @usage \method{plot}{hbal}(x, ...)
-#' @param x       an object of class \code{hbalobject} as returned by \code{hbal}.
-#' @param ...     Further arguments to be passed to \code{plot.hbal()}.
+#' @usage \method{plot}{zbal}(x, ...)
+#' @param x       an object of class \code{zbalobject} as returned by \code{zbal}.
+#' @param ...     Further arguments to be passed to \code{plot.zbal()}.
 #' @return A matrix of ggplots of covariate balance by group
 #' @import ggplot2
 #' @import gridExtra
@@ -12,8 +12,8 @@
 #' @importFrom stats sd
 #' @author Yiqing Xu, Eddie Yang
 #' @export
-#' @method plot hbal
-plot.hbal <- function(x, ...){
+#' @method plot zbal
+plot.zbal <- function(x, ...){
 	plots <- list()
 	out.sub <- list()
 	width <- list()
@@ -57,18 +57,18 @@ plot.hbal <- function(x, ...){
 }
 
 
-#' @title Summarizing from an \code{hbal} Object
+#' @title Summarizing from an \code{zbal} Object
 #' @aliases summary
-#' @description This function prints a summary from an \code{hbal} Object.
-#' @usage \method{summary}{hbal}(object, ...)
-#' @param object  an object of class \code{hbalobject} as returned by \code{hbal}.
-#' @param ...     Further arguments to be passed to \code{summary.hbal()}.
+#' @description This function prints a summary from an \code{zbal} Object.
+#' @usage \method{summary}{zbal}(object, ...)
+#' @param object  an object of class \code{zbalobject} as returned by \code{zbal}.
+#' @param ...     Further arguments to be passed to \code{summary.zbal()}.
 #' @return a summary table
 #' @importFrom stats sd
 #' @author Yiqing Xu, Eddie Yang
 #' @export
-#' @method summary hbal
-summary.hbal <- function(object, ...){
+#' @method summary zbal
+summary.zbal <- function(object, ...){
 	if (!is.null(object$call)) cat("\nCall:", deparse(object$call), sep = "\n")
 	groups <- c("linear", "two-way interact", "square", "three-way interact", "linear-squre interact", "cubic")
 	groups <- groups[1:length(object$group.assignment)]
@@ -77,7 +77,7 @@ summary.hbal <- function(object, ...){
 		object$group.assignment <- object$group.assignment[-which(object$group.assignment==0)]
 	}
 
-	att <- summary(hbal::att(object))
+	att <- summary(zbal::att(object))
 	cat("\nAverage Treatment Effect on the Treated:\n")
 	print(round(att$coefficients["Treat",], 3))
 	
